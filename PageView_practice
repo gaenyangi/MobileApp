@@ -1,0 +1,31 @@
+class OurHomePage extends StatelessWidget{ 
+  OurHomePage({super.key});
+  final items = List.generate(100, (index) => index).toList();
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar( // 상단의 제목과 메뉴버튼, +버튼 등이 있는 앱바
+          backgroundColor: AppColor.Malachite, // 원하는 특정 화면의 앱바 색깔
+          title: const Text('Flutter Demo'),
+          //leading: Icon(Icons.add), // 왼쪽에 + 버튼으로 새로운 것 생성하는 버튼 추가
+          actions:[
+            IconButton(onPressed: (){}, icon: Icon(Icons.add)) // (){}은 빈 function을 나타냄
+          ]
+      ),
+      body: PageView( // 책처럼 한 페이지씩 보고 옆으로 드래그하여 넘길 수 있는 페이지
+        children: [
+          Container(
+            color: Colors.red,
+          ),
+          Container(
+            color: Colors.green,
+          ),
+          Container(
+            color: Colors.blue,
+          )
+        ],
+      ),
+      drawer: Drawer(), // 왼쪽에 세줄로 표기되어 목록 창이 열리는 버튼 추가
+    );
+  }
+}
