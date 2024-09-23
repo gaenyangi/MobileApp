@@ -1,0 +1,142 @@
+import 'package:flutter/material.dart';
+import 'style.dart';
+
+void main(){
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title: 'First flutter app',
+      theme: ThemeData(
+        primaryColor: Colors.blue, // 전체 색깔
+        primarySwatch: Colors.orange,
+        fontFamily: 'Pretendard',
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget{
+  MyHomePage({super.key});
+  final items = List.generate(100, (index) => index).toList(); // 0부터 99까지 값을 입력한 리스트를 생성
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar( // 상단의 제목과 메뉴버튼, +버튼 등이 있는 앱바
+        backgroundColor: AppColor.Malachite, // 원하는 특정 화면의 앱바 색깔
+        title: const Text('Flutter Demo'),
+        //leading: Icon(Icons.add), // 왼쪽에 + 버튼으로 새로운 것 생성하는 버튼 추가
+        actions:[
+          IconButton(onPressed: (){}, icon: Icon(Icons.add)) // (){}은 빈 function을 나타냄
+        ]
+      ),
+      body: Column( // 컨테이너를 wrap with column으로 하여 여러 container를 쌓는 것
+        // Row로 바꾸면 가로로 옆으로 쌓아지므로 아래 정렬들도 반대로 바뀌게 된다.
+        // 만약 겹치게 하고 싶다면 Stack을 사용하면 각각의 컨테이너들이 겹칠 수 있게 된다. 이 때도 Allignment를 사용하여 원하는대로 정렬 가능하다.
+
+
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 아래의 컨테이너들의 주축 거리 정렬 조정
+        crossAxisAlignment: CrossAxisAlignment.center, // 위와 90도 축을 기준으로 정렬
+
+        children: [
+          Container( // 원하는 컨텐츠를 깔끔하게 여백 및 레이아웃을 조정하기 위해 감싸는 객체
+            color: Colors.red,
+            width: 100.0,
+            height: 100.0,
+              padding: EdgeInsets.all(8.0),
+              margin: EdgeInsets.all(10.0),
+          ),
+          Container(
+            color: Colors.blue,
+            width: 80.0,
+            height: 80.0,
+            padding: EdgeInsets.all(8.0),
+            margin: EdgeInsets.all(10.0),
+          ),
+          Container(
+            color: Colors.green,
+            width: 600.0,
+            height: 600.0,
+            padding: EdgeInsets.all(8.0),
+            margin: EdgeInsets.all(10.0),
+          ),
+        ],
+
+      ),
+      drawer: Drawer(), // 왼쪽에 세줄로 표기되어 목록 창이 열리는 버튼 추가
+    );
+  }
+}
+
+class YourHomePage extends StatelessWidget{ // list 및 드래그
+  YourHomePage({super.key});
+  final items = List.generate(100, (index) => index).toList(); // 0부터 99까지 값을 입력한 리스트를 생성
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar( // 상단의 제목과 메뉴버튼, +버튼 등이 있는 앱바
+          backgroundColor: AppColor.Malachite, // 원하는 특정 화면의 앱바 색깔
+          title: const Text('Flutter Demo'),
+          //leading: Icon(Icons.add), // 왼쪽에 + 버튼으로 새로운 것 생성하는 버튼 추가
+          actions:[
+            IconButton(onPressed: (){}, icon: Icon(Icons.add)) // (){}은 빈 function을 나타냄
+          ]
+      ),
+      body: SingleChildScrollView( // 스크롤 가능하게 만듬
+        child: ListBody( // column으로 하면 숫자를 눌러야 드래그 가능하므로 아무대나 눌러도 드래그 가능하게 변환
+          children: items.map((i)=>Text('$i')).toList(), // list의 값을 text로 변환하고, 다시 list로 입력한 것을 children으로 가짐.
+        ),
+      ),
+      drawer: Drawer(), // 왼쪽에 세줄로 표기되어 목록 창이 열리는 버튼 추가
+    );
+  }
+}
+
+class OurHomePage extends StatelessWidget{ // 출력 형식을 list에 알맞게 변환하여 표기
+  OurHomePage({super.key});
+  final items = List.generate(100, (index) => index).toList(); // 0부터 99까지 값을 입력한 리스트를 생성
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar( // 상단의 제목과 메뉴버튼, +버튼 등이 있는 앱바
+          backgroundColor: AppColor.Malachite, // 원하는 특정 화면의 앱바 색깔
+          title: const Text('Flutter Demo'),
+          //leading: Icon(Icons.add), // 왼쪽에 + 버튼으로 새로운 것 생성하는 버튼 추가
+          actions:[
+            IconButton(onPressed: (){}, icon: Icon(Icons.add)) // (){}은 빈 function을 나타냄
+          ]
+      ),
+      body: ListView( // list를 출력하기에 적절한 body, 아래 listtile을 계속 늘려도 자동으로 스크롤 가능하다.
+        scrollDirection: Axis.vertical,
+        children: [
+          ListTile( // 눌렀을 때 아래로 쭉 펼쳐지는 리스트를 담는 형식
+            leading: Icon(Icons.home),
+            title: Text('Home'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: (){}, // 눌렀을 때 어떻게 작동할지 결정하는 함수
+          ),
+          ListTile(
+            leading: Icon(Icons.calculate),
+            title: Text('caluculate'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: (){},
+          ),
+          ListTile(
+            leading: Icon(Icons.calendar_month),
+            title: Text('calendar'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: (){},
+          ),
+        ],
+      ),
+      drawer: Drawer(), // 왼쪽에 세줄로 표기되어 목록 창이 열리는 버튼 추가
+    );
+  }
+}
