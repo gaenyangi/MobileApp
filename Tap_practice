@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+import 'style.dart';
+
+void main(){
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title: 'First flutter app',
+      theme: ThemeData(
+        primaryColor: Colors.blue, // 전체 색깔
+        primarySwatch: Colors.orange, // top/bottom appbar에서 선택했을 때 현재 선택된 것을 가리키는 색깔
+        fontFamily: 'Pretendard',
+      ),
+      home: OurHomePage(),
+    );
+  }
+}
+
+class OurHomePage extends StatelessWidget{ // 출력 형식을 list에 알맞게 변환하여 표기
+  OurHomePage({super.key});
+  final items = List.generate(100, (index) => index).toList(); // 0부터 99까지 값을 입력한 리스트를 생성
+  @override
+  Widget build(BuildContext context){
+    return DefaultTabController( // Tabbarview를 사용하려면 scaffold를 바꿔줘야 함.
+      length: 3, // 이 탭바는 appbar 내부에 포함됨
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: AppColor.Malachite,
+            title: const Text('Flutter Demo'),
+            //leading: Icon(Icons.add),
+            actions:[
+              IconButton(onPressed: (){}, icon: Icon(Icons.add))
+            ],
+          bottom: TabBar(
+            tabs:[
+              Tab(icon: Icon(Icons.tag_faces)), // 각 아이콘을 클릭하여 원하는 페이지로 이동
+              Tab(text: 'Menu'),
+              Tab(icon: Icon(Icons.info), text:'info'),
+            ],
+          ),
+        ),
+        body: TabBarView( // 위의 탭바에서 버튼을 클릭하여 옆 페이지로 넘어가게 하는 것.
+          children: [
+            Tab( // widget으로 감싸기 하고 widget을 tab으로 바꾸기. 탭을 화면 전체가 아니라 컨트롤 가능하게 만드는 방법.
+            //child: Center( // 혹시 정중앙에 오지 않을 때 중앙으로 위치시키는 방법.
+              child: Align( // 원하는 위치로 이동
+                alignment: Alignment.bottomRight, // 오른쪽 아래로 놓는 것
+                child: Padding( // 컨테이너 자체 속성에 padding이 없을 경우 padding으로 감싸서 사용할 수 있다.
+                  padding: const EdgeInsets.fromLTRB(10,20,30,40), // 각 변에 다른 크기의 여백 주는 법
+                  //padding: const EdgeInsets.only(left: 10,top: 20), //원하는 변에만 여백 주기
+                  child: Container(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+            ),
+            Tab(
+              child: Row(
+                children: [
+                  Container(
+                    color: Colors.red,
+                    width: 100,
+                    height:100,
+                  ),
+                  Expanded( // 만약 두개를 이걸로 설정하면 남은 넓이를 같은 길이만큼 나눠가짐.
+                    flex:1, // 비율을 설정하는 값 아래와 합쳐서 1:2 비율로 넓이를 분할
+                    child: Container(
+                      color: Colors.green,
+                      width: 100,
+                      height:100,
+                    ),
+                  ),
+                  Expanded( // 위는 설정한 길이대로, expanded는 남은 공간을 다 채우고 싶을 때
+                    flex:2,
+                    child: Container(
+                      color: Colors.blue,
+                      width: 100,
+                      height:100,
+                    ),
+                  ),
+                ],
+              )
+            ),
+            Tab(
+              child: ElevatedButton( // 버튼
+                //TextButton, IconButton, FloatingActionButton 등 다른 것을 누르게 할 수도 있음, child를 알맞게 바꿔줘야 함.
+                //CirculaProgressindicator, LinearProgressIndicator 등으로 로딩바 만들 수 있음
+                  onPressed: (){},
+                  child: Text('button'),
+              ),
+              /*
+              child: Card( // 카드 = 버튼은 아니고 그냥 장식용
+                shape:RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                elevation: 4.0,
+                child: Container(
+                  width: 100,
+                  height:100,
+                  child: Center(child:Text('text')),
+                ),
+              ),*/
+            ),
+          ],
+        ),
+        drawer: Drawer(), // 왼쪽에 세줄로 표기되어 목록 창이 열리는 버튼 추가
+        bottomNavigationBar: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(icon:Icon(Icons.home),label: 'Home'), // 아래 앱바에 각각 아이콘을 만드는 것
+              BottomNavigationBarItem(icon:Icon(Icons.person),label: 'Profile'),
+              BottomNavigationBarItem(icon:Icon(Icons.notifications),label: 'Notification'),
+            ],
+        ),
+      ),
+    );
+  }
+}
+
+
