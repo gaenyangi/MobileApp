@@ -51,11 +51,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _gameOver(){
     setState((){
-      _myscore=0;
-      _rivalscore=0;
       if(_myscore>_rivalscore) _win++;
       else if(_myscore<_rivalscore) _lose++;
       else _draw++;
+      _myscore=0;
+      _rivalscore=0;
     });
   }
 
@@ -93,15 +93,15 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container( // 사진만 덜렁 넣는게 아니라 위젯, 컨테이너 등으로 감싸서 입력
-              margin: EdgeInsets.only(bottom: 50.0), // 그 다음 요소와의 거리
+              margin: EdgeInsets.only(bottom: 5.0), // 그 다음 요소와의 거리
               padding: EdgeInsets.all(10.0), // 사진 자체의 경계선
               decoration: BoxDecoration(
-                  color:Colors.blue.withOpacity(0.25), //사진에 배경색 넣기
+                  color:Colors.blue.withOpacity(0.0), //사진에 배경색 넣기
                   borderRadius: BorderRadius.circular(20.0)
               ),
               child: const Image(
                   image: AssetImage(
-                      'assets/soccer.png'
+                      'assets/soccer.jpg'
                   ),
                   width: 200.0
               ),
@@ -117,9 +117,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 일정한 간격으로 떨어뜨리기
               children: [
-                Text(_myscore as String),
+                Text(_myscore.toString()), // Text 출력을 위해 int -> string
                 Text(':'),
-                Text(_rivalscore as String),
+                Text(_rivalscore.toString()),
               ],
             ),
             Row(
@@ -135,9 +135,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row( // column에서 가로로 형식 추가
               mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 일정한 간격으로 떨어뜨리기
               children: [
-                Text('Win : ',semanticsLabel: _win as String),
-                Text('Draw : ',semanticsLabel: _draw as String),
-                Text('Lose : ',semanticsLabel: _lose as String),
+                Text('Win : '+_win.toString()),
+                Text('Draw : '+_draw.toString()),
+                Text('Lose : '+_lose.toString()),
               ],
             ),
           ],
