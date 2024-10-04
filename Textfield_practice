@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Soccer Game',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Soccer Game'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
+  String _obesity='Normal';
+
+  void dispose(){ // 해당 위젯이 없어졌을 때 행동 결정하는 함수
+    _heightController.dispose();
+    _weightController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
+        title: Text('Receive User Information'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+            child: Column(
+              children: [
+                TextField( // 사용자가 줄글을 입력할 수 있는 곳
+                  decoration: InputDecoration( // 해당 칸에 어떤 것을 입력해야 하는지 설명, 혹은 제목
+                    border: OutlineInputBorder(),
+                    labelText: 'height'
+                  ),
+                  controller: _heightController, // textfield에 사용할 컨트롤러 지정
+                  keyboardType: TextInputType.number, //이렇게 하면 string이 아니라 숫자 키보드가 뜸
+                ),
+                Container(height: 20,), // 위젯 간의 간격 조정용 컨테이너
+                TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'weight'
+                  ),
+                  controller: _weightController,
+                ),
+                Container(height: 20,),
+                Text(_obesity), // 내가 입력한 string을 여기에 저장, 필요하다면 다른 위젯에 전달하여 사용가능.
+                Container(height: 20,),
+                ElevatedButton(onPressed: (){
+                  setState(() {
+                    var heightValue = double.parse(_heightController.text.trim()); // 입력된 값을 스페이스 바 지우고(트림) 숫자로 변경하여 저장
+                    var weightValue = double.parse(_weightController.text.trim());
+                    if(weightValue/(heightValue*heightValue)>25){
+                      _obesity='Obesity';
+                    }else{
+                      _obesity='Normal';
+                    }
+                  });
+                },child:Text('Enter')),
+              ],
+            ),
+        ),
+      ),
+    );
+  }
+}
