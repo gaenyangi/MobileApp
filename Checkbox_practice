@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+
+enum Language {cpp, python, dart}
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Soccer Game',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Soccer Game'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  bool _isChecked = false;
+  bool _isChecked2 = false;
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
+        title: Text('Receive User Information'),
+      ),
+      body: ListView(
+        children: [
+          CheckboxListTile( // Switch나 SwitchListTile를 사용하여 같은 기능을 다르게 표현가능.
+            title: Text('test'),
+            value: _isChecked,
+            onChanged:(bool? value){
+              setState((){ // 일어난 변화를 반영하여 UI에 다시 그려주는 함수. 여기서는 불리언 값이 변함에 따라 체크가 되었다 해제되는 것을 표기
+                _isChecked = value!; // bool? 타입은 null도 받을 수 있으므로 우리가 value!를 통해 반드시 널이 아니라는 것을 명시.
+              });
+            }
+          ),
+          CheckboxListTile( // Switch를 사용하여 같은 기능을 다르게 표현가능.
+              title: Text('test2'),
+              value: _isChecked2,
+              onChanged:(bool? value){
+                setState((){ // 일어난 변화를 반영하여 UI에 다시 그려주는 함수. 여기서는 불리언 값이 변함에 따라 체크가 되었다 해제되는 것을 표기
+                  _isChecked2 = value!; // bool? 타입은 null도 받을 수 있으므로 우리가 value!를 통해 반드시 널이 아니라는 것을 명시.
+                });
+              }
+          ),
+        ],
+      ),
+    );
+  }
+}
