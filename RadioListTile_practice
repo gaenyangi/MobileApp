@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+
+enum Language {cpp, python, dart}
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Soccer Game',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Soccer Game'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  Language _language=Language.cpp;
+  
+  
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
+        title: Text('Receive User Information'),
+      ),
+      body: ListView(
+        children: [
+          RadioListTile( // 여러개의 항목 중 하나만 선택 가능한 것을 만들 때 사용. 
+              title:Text('C++'),
+              value: Language.cpp,
+              groupValue: _language, //현재 선택한 것이 무엇인지 나타냄. 따라서 모든 radio가 공유하며, 선택한 것으로 값이 바뀜
+              onChanged: (value){
+                setState(() {
+                  _language=value!;
+                });
+              }
+          ),
+          RadioListTile(
+              title:Text('python'),
+              value: Language.python,
+              groupValue: _language,
+              onChanged: (value){
+                setState(() {
+                  _language=value!;
+                });
+              }
+          ),
+          RadioListTile(
+              title:Text('dart'),
+              value: Language.dart,
+              groupValue: _language,
+              onChanged: (value){
+                setState(() {
+                  _language=value!;
+                });
+              }
+          ),
+        ],
+      ),
+    );
+  }
+}
