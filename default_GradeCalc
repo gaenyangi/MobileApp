@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Grade Calculator',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Soccer Game'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _midController = TextEditingController(); // mid term
+  final _finController = TextEditingController(); // final
+
+  int _totalpoint=0; // total point for grade
+
+  int _leaderpoint=0; // check rather leader or member
+  bool FN=false; // check rather absence more than 4 times
+
+  int _bonuspoint=0; // drop down bonus point
+  final _valueList = List.generate(10, (i)=> '$i point');
+  String _selectedValue='0 point';
+
+
+  String grade = 'F';
+
+  void dispose(){ // 해당 위젯이 없어졌을 때 행동 결정하는 함수
+    _midController.dispose();
+    _finController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
+        title: Text('Grade Calculator'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+            child: ListView(
+              children: [
+                TextField( // 사용자가 줄글을 입력할 수 있는 곳
+                  decoration: InputDecoration( // 해당 칸에 어떤 것을 입력해야 하는지 설명, 혹은 제목
+                    border: OutlineInputBorder(),
+                    labelText: 'Mid term exam'
+                  ),
+                  controller: _midController, // textfield에 사용할 컨트롤러 지정
+                  keyboardType: TextInputType.number, //이렇게 하면 string이 아니라 숫자 키보드가 뜸
+                ),
+                Container(height: 20,), // 위젯 간의 간격 조정용 컨테이너
+                TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Final exam'
+                  ),
+                  controller: _finController,
+                ),
+                Container(height: 20,),
+
+                RadioListTile(
+                    title:Text('Project Team Leader (+10)'),
+                    value: 10,
+                    groupValue: _leaderpoint,
+                    onChanged: (value){
+                      setState(() {
+                        _leaderpoint=value!;
+                      });
+                    }
+                ),
+                RadioListTile(
+                    title:Text('Project Team member'),
+                    value: 0,
+                    groupValue: _leaderpoint,
+                    onChanged: (value){
+                      setState(() {
+                        _leaderpoint=value!;
+                      });
+                    }
+                ),
+
+                Row(
+                  children: [
+                    Text('Additional Point'),
+                    Container(width: 20,),
+                    DropdownButton(
+
+                      value: _selectedValue,
+                      items: _valueList.map(
+                            (point) => DropdownMenuItem(
+                          value: point,
+                          child: Text(point),
+                        ),
+                      ).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedValue = value!;
+                          _bonuspoint = int.parse(value.split(' ')[0]); // 선택한 값의 숫자 부분만 추출하여 _bonuspoint에 저장
+                        });
+                      },
+                    ),
+                  ],
+                ),
+
+                CheckboxListTile(
+                  title: Text('Absence less than 4'),
+                    value: FN,
+                    onChanged: (bool? value){
+                      setState(() {
+                        FN=value!;
+                      });
+                    }
+                ),
+
+                Center(child: Text(grade)),
+
+                Container(height: 20,),
+                ElevatedButton(onPressed: (){
+                  setState(() {
+                    var mid = int.parse(_midController.text.trim());
+                    var fin = int.parse(_finController.text.trim());
+                    _totalpoint=(mid+fin+_bonuspoint+_leaderpoint) as int;
+
+                    if(_totalpoint>=170){
+                      grade='A';
+                    }else if(_totalpoint>=150){
+                      grade='B';
+                    }else if(_totalpoint>=130){
+                      grade='C';
+                    }else if(_totalpoint>=110){
+                      grade='D';
+                    }else if(_totalpoint<110){
+                      grade='F';
+                    }
+                    if(FN){
+                      grade='F';
+                    }
+
+                  });
+                },child:Text('Enter')),
+              ],
+            ),
+        ),
+      ),
+    );
+  }
+}
