@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Grade Calculator',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Soccer Game'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+
+class _MyHomePageState extends State<MyHomePage> {
+  String text = '';
+  double squareside = 100;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
+        title: Text('Grade Calculator'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector( // 사용자의 클릭, 홀딩과 같은 작업을 인식
+              child: AnimatedContainer( // 대부분 위젯 앞에 animated를 붙이면 움직이는 것으로 변환됨
+                width: squareside,
+                height: squareside,
+                color: Colors.orange,
+                duration: const Duration(seconds: 1),
+              ),
+              onTap:(){ //클릭할 경우
+                setState(() {
+                  if(text == ''){
+                    text = 'This is an orange square.';
+                  }else{
+                    text = '';
+                  }
+                });
+              },
+              onLongPress:(){ //길게 누를 경우
+                setState(() {
+                  if(squareside>75){
+                    squareside=50;
+                    text = 'This is samll orange square';
+                  }else{
+                    squareside=100;
+                    text='This is normal ornage square';
+                  }
+                });
+              },
+            ),
+            SizedBox(
+              height: 28,
+            ),
+            Text(text, style: TextStyle(
+              fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+  }
+}
