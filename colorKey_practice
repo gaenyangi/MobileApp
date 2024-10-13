@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  List<Widget> myTiles = [MyTile(key: UniqueKey()), MyTile(key: UniqueKey()),]; // stateless widget으로 하면 상관없지만 stateful로 하려면 key를 추가해주어야된다.
+  //마찬가지로 배운 것 처럼 이 상태에서 padding을 추가한다면 이렇게 unique key를 추가해도 색이 제대로 변화하지않는다. (같은 키를 가지는 것이 없다고 판단하여 새로운 것 생성)
+  //따라서 padding 등을 추가하려면 해당 위치에 key를 추가해야 한다. (padding 안에 key, padding, child-mytile로 구성)
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Home Page'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed:(){},
+          ),
+        ],
+      ),
+      body: Row(
+        children: [
+          children: myTiles,
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.swap_calls),
+        onPressed: (){
+          setState((){
+            myTiles.insert(1, myTiles.removeAt(0));
+          });
+        },
+      ),
+    );
+  }
+}
+
+
+class MyTile extends StatelessWidget{
+
+  MyTile({Key?key, required String title}):super(key:key);
+  final Color myColor = UniqueColorGenerator.getColor();
+
+
+  @override
+  Widget build(BuildContext context){
+    return Container(
+      width: 100,
+      height: 100,
+      color: myColor;
+    );
+  }
+}
+
+class UniqueColorGenerator{
+  static Random random = Random();
+  static Color getColor(){
+    return Color.fromARGB(
+      255, random.nextInt(255), random.nextInt(255), random.nextInt(255)
+    );
+  }
+}
