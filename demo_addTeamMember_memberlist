@@ -1,0 +1,29 @@
+// lib/team_provider.dart
+import 'package:flutter/material.dart';
+
+class TeamMember {
+  final String name;
+  final String studentNo;
+
+  TeamMember({required this.name, required this.studentNo});
+}
+
+class TeamProvider with ChangeNotifier {
+  final List<TeamMember> _teamMembers = [];
+
+  List<TeamMember> get teamMembers => _teamMembers;
+
+  void addMember(TeamMember member) {
+    if (_teamMembers.length < 3) {
+      _teamMembers.add(member);
+      notifyListeners();
+    }
+  }
+
+  void removeMember(TeamMember member) {
+    _teamMembers.remove(member);
+    notifyListeners();
+  }
+
+  bool get isFull => _teamMembers.length >= 3;
+}
